@@ -11,8 +11,9 @@ export interface Token {
 export interface CustomDropdownProps {
     tokens: Token[];
     value: string;
+    typeCard: 'from' | 'to';
     onChange: (value: string) => void;
-    placeholder?: string;
+    // placeholder?: HTMLElement | string;
     disabled?: string[];
 }
 
@@ -27,4 +28,7 @@ export interface CurrencySwapFormValues {
 export interface ValidationErrors {
     from?: string;
     to?: string;
+}
+export interface ButtonTokenProps {
+    selectedToken: Token;
 }

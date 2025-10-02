@@ -1,17 +1,20 @@
 import { useState, useRef } from 'react';
 import type { CustomDropdownProps } from '../types';
 import { useModal } from '../hooks/useModal';
+import ButtonToken from './ButtonToken';
 
 export default function CustomDropdown({
     tokens,
     value,
+    typeCard,
     onChange,
-    placeholder,
+    // placeholder,
     disabled = [],
 }: CustomDropdownProps) {
     const [searchTerm, setSearchTerm] = useState('');
 
     const searchInputRef = useRef<HTMLInputElement>(null);
+    const placeholderToken = typeCard === 'from' ? tokens[0] : tokens[2];
     const selectedToken = tokens.find((t) => t.id === value);
 
     const { isOpen, open, close, modalRef } = useModal({
@@ -28,46 +31,20 @@ export default function CustomDropdown({
         onChange(tokenId);
         close();
     };
-
     return (
-        <>
+        <div className="flex items-center">
             <button
                 type="button"
                 onClick={open}
-                className="mt-1 w-full rounded-lg border p-2 bg-white text-left flex items-center justify-between hover:border-gray-400 focus:border-blue-500 focus:outline-none"
+                className="relative rounded-[16px] bg-transparent inline-flex items-center justify-center opacity-1 px-2 py-1 hover:border-gray-400 focus:border-blue-500 focus:outline-none"
             >
                 <div className="flex items-center">
                     {selectedToken ? (
-                        <>
-                            <img
-                                src={selectedToken.logo}
-                                alt={selectedToken.currency}
-                                className="w-5 h-5 mr-2 rounded-full"
-                                onError={(e) => {
-                                    (
-                                        e.target as HTMLImageElement
-                                    ).style.display = 'none';
-                                }}
-                            />
-                            <span>{selectedToken.currency}</span>
-                        </>
+                        <ButtonToken selectedToken={selectedToken} />
                     ) : (
-                        <span className="text-gray-500">{placeholder}</span>
+                        <ButtonToken selectedToken={placeholderToken} />
                     )}
                 </div>
-                <svg
-                    className="w-4 h-4 text-gray-400"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                >
-                    <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M19 9l-7 7-7-7"
-                    />
-                </svg>
             </button>
 
             {/* Modal Popup */}
@@ -196,8 +173,6 @@ export default function CustomDropdown({
                     </div>
                 </div>
             )}
-
-            {/* {isOpen && <Modal isOpen={isOpen} onClose={close} ref={modalRef} />} */}
-        </>
+        </div>
     );
 }
